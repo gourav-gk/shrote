@@ -1,0 +1,7 @@
+datasets/
+runs/
+sample_data/
+output.mp3
+.idea/
+voice.py
+xyz.py
