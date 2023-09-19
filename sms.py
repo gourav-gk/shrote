@@ -2,8 +2,8 @@ from twilio.rest import Client
 
 def send():
     # Twilio API credentials
-    account_sid = ''
-    auth_token = ''
+    account_sid = 'ACd059465757b5bb8f3e7b540e17af4d6a'
+    auth_token = '8d87aa61fc0ba05719cac14e5f154791'
 
     # Create a Twilio client
     client = Client(account_sid, auth_token)

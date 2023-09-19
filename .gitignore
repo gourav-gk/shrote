@@ -9,5 +9,4 @@ location.pyit
 __pycache__/face.cpython-310.pyc
 __pycache__/object_model.cpython-310.pyc
 __pycache__/sms.cpython-310.pyc
-
-
+sms.py

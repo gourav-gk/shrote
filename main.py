@@ -13,10 +13,14 @@ import spacy
 from bardapi import BardCookies
 import object_model as oj
 import sms
+import pyttsx3
+
+# Initialize the text-to-speech engine
+engine = pyttsx3.init()
 
 cookie_dict = {
-    "__Secure-1PSID": "bAj0VRACzUfA39PRAyRcAJIkMQKWJMWtE4xszYlHpUFXydcQ52npIhRyLuZt14rjYczvwQ.",
-    "__Secure-1PSIDTS": "sidts-CjIB3e41hQpXwTtBOOwrF-bFy1yuwJRErBckJkmyj1DPrt1q2w7pfJ6G9-0cADOxkaslxRAA",
+    "__Secure-1PSID": "bAhFp6kgxBw8pI2ahjyUX0EBdSWIYpu5Uj_I1G8-IJgAB1rP1RvgsOCKx_YaxTf1lcGxRg.",
+    "__Secure-1PSIDTS": "sidts-CjIB3e41hQNI6r32CV9GBy6aKyrFKU0j2vPwlXpgnm3KkX7Fv7t8zmb4VUZMb9VQTMDWVRAA",
     # Any cookie values you want to pass session object.
 }
 
@@ -66,7 +70,13 @@ def speak(text, lang='en'):
     tts = gTTS(text=text, lang=lang)
     tts.save("output.mp3")
     #os.system("mpg321 output.mp3")  # You may need to adjust this command based on your OS and audio player
-    playsound('output.mp3')
+    try:
+        playsound('output.mp3')
+    except playsound.PlaysoundException as er:
+        print("something happened")
+
+
+
 
 
 
@@ -103,6 +113,10 @@ def process_command(command, target_language='hi'):  # Set the target language t
             response = "Hi, i am source. how can i help you"
         elif "who are you" in translated_command:
             response = "Greetings to all! I am source, an AI activated by voice commands. My abilities include comprehending human language, executing tasks, and offering assistance. My primary purpose is to provide accurate guidance and remove obstacles for individuals who may have visual or auditory impairments."
+
+
+        elif "contributor" in translated_command:
+            response = "Mentor is Professor Arshad Ushmani, contributors are Gourav, Nirmal, Alok, and Shashikant"
         elif "time" in translated_command:
             from datetime import datetime
             current_time = datetime.now().strftime("%H:%M:%S")
@@ -116,7 +130,7 @@ def process_command(command, target_language='hi'):  # Set the target language t
         elif "stop" in translated_command:
             response = "ok listening stopped"
             exit(1)
-        elif "who is" in translated_command:
+        elif "who is" in translated_command and "front" not in translated_command:
             name = command.replace('who is', '')
             info = wikipedia.summary(name, 1)
             response = info[:500]
@@ -131,6 +145,14 @@ def process_command(command, target_language='hi'):  # Set the target language t
         elif "front" in translated_command:
             response = oj.detect()
             print(response)
+
+        elif "play music" in translated_command:
+            engine.say("playing music")
+            engine.runAndWait()
+            codepath="C:\\Users\\NIRMAL\\PycharmProjects\\music1.mp3"
+            os.startfile(codepath)
+            exit(1)
+
         elif "help" in translated_command:
             sms.send()
             response = "Help request is been sent, please be safe until someone reaches for help"
@@ -160,6 +182,8 @@ def process_command(command, target_language='hi'):  # Set the target language t
 while True:
     with sr.Microphone() as source:
         print("Listening for a command...")
+        engine.say("Listening the command")
+        engine.runAndWait()
         recognizer.adjust_for_ambient_noise(source)
         audio = recognizer.listen(source)
 
